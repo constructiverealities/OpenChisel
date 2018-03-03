@@ -1,0 +1,47 @@
+<launch>
+    <!-- Use a different machine name to connect to a different ROS server-->
+    <machine name="local" address="localhost" default="true"/>
+    <!-- The chisel server node-->
+    <node name="Chisel" pkg="chisel_ros" type="ChiselNode" output="screen"> 
+        <!-- Size of the TSDF chunks in number of voxels -->
+        <param name="chunk_size_x" value="16"/>
+        <param name="chunk_size_y" value="16"/>
+        <param name="chunk_size_z" value="16"/>
+        <!--- The distance away from the surface (in cm) we are willing to reconstuct -->
+        <param name="truncation_scale" value="10.0"/>
+        <!-- Whether to use voxel carving. If set to true, space near the sensor will be
+             carved away, allowing for moving objects and other inconsistencies to disappear -->
+        <param name="use_voxel_carving" value="true"/>
+        <!-- When true, the mesh will get colorized by the color image.-->
+        <param name="use_color" value="false"/>
+        <!-- The distance from the surface (in meters) which will get carved away when
+             inconsistencies are detected (see use_voxel_carving)-->
+        <param name="carving_dist_m" value="0.05"/>
+        <!-- The size of each TSDF voxel in meters-->
+        <param name="voxel_resolution_m" value="0.025"/>
+        <!-- The maximum distance (in meters) that will be constructed. Use lower values
+             for close-up reconstructions and to save on memory. -->
+        <param name="far_plane_dist" value="1.5"/>
+        <!-- Name of the TF frame corresponding to the fixed (world) frame -->
+        <param name="base_transform" value="/base_link"/>
+        <!-- Name of the TF frame associated with the depth image. Z points forward, Y down, and X right -->
+        <param name="depth_image_transform" value="/camera_depth_optical_frame"/>
+        <!-- Name of the TF frame associated with the color image -->
+        <param name="color_image_transform" value="/camera_rgb_optical_frame"/>
+        <!-- Mode to use for reconstruction. There are two modes: DepthImage and PointCloud.
+             Only use PointCloud if no depth image is available. It is *much* slower-->
+        <param name="fusion_mode" value="DepthImage"/>
+    
+        <!-- Name of the depth image to use for reconstruction -->
+        <remap from="/depth_image" to="/camera/depth/image"/>
+        <!-- Name of the CameraInfo (intrinsic calibration) topic for the depth image. -->
+        <remap from="/depth_camera_info" to="/camera/depth/camera_info"/>
+        <!-- Name of the color image topic -->
+        <remap from="/color_image" to="/camera/color/image"/>
+        <!-- Name of the color camera's CameraInfo topic -->
+        <remap from="/color_camera_info" to="/camera/color/camera_info"/>
+        
+        <!-- Name of a point cloud to use for reconstruction. Only use this if no depth image is available -->
+        <remap from="/camera/depth_registered/points" to="/camera/depth/points"/>
+    </node>
+</launch>
