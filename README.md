@@ -39,6 +39,7 @@ Note: you will also need to get the messages package, [chisel_msgs](https://gith
 * C++11
 * catkin (`ros-hydro` or `ros-indigo` or higher)
 * [PCL 1.8](http://pointclouds.org/) compiled with stdC++11 enabled.
+  * more information and decent guide [here](https://github.com/felixendres/rgbdslam_v2/wiki/Instructions-for-Compiling-Rgbdslam-(V2)-on-a-Fresh-Ubuntu-16.04-Install) from RGBDSLAM_V2
 * ROS OpenCV [cv_bridge](http://wiki.ros.org/cv_bridge)
 
 ### A note on PCL
